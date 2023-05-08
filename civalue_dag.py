@@ -17,7 +17,6 @@ with DAG(
     
     def check_env(**kwargs):
         # parses the environment type parameter given by the user and chooses the correct workflow branch to execute
-        # env = kwargs["dag_run"].conf.get("environment_type")
         env = kwargs["params"].get("environment_type")
         if env == "development":
             return "write_file_development"
@@ -28,7 +27,6 @@ with DAG(
 
     def write_file(**kwargs):
         # printing text into local file
-        # env = kwargs["dag_run"].conf.get("environment_type")
         env = kwargs["params"].get("environment_type")
         timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         file_name = f"civalue_{env}_{timestamp}.txt"
@@ -43,7 +41,6 @@ with DAG(
 
     def print_file(**kwargs):
         # reads the newly created file and prints its content to the console
-        # env = kwargs["dag_run"].conf.get("environment_type")
         env = kwargs["params"].get("environment_type")
         file_path = kwargs["ti"].xcom_pull(task_ids=f"write_file_{env}")
         logging.info(f"file_path: {file_path}")
